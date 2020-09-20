@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import {BrowserRouter as Router} from 'react-router-dom'
-import AppRoutes from './AppRoutes'
-import DashboardRoutes from './DashboardRoutes'
+import Routes from './Routes'
 
 import logo from './logo.svg';
 import './App.scss';
@@ -14,7 +13,7 @@ import {Container,
 function App() {
   return (
 		<Router>
-			<AppRoutes/>
+			<Routes/>
 		</Router>
   );
 }

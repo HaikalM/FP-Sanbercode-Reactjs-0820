@@ -1,9 +1,14 @@
 import React from 'react'
+import DashboardLayout from '../../layouts/Dashboard'
 
 const MoviesIndex = () => {
 	return(
-		<h1>Index Movies</h1>
+		<>
+			<DashboardLayout>
+				<h1>Index Movies</h1>
+			</DashboardLayout>
+		</>
 	)
 }
 
-export default MoviesIndex 
+export default MoviesIndex

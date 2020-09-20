@@ -1,7 +1,7 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import {Link} from 'react-router-dom'
 
-import '../../styles/component/Navbar.scss'
+import '../../styles/component/Sidebar.scss'
 import * as FiIcons from 'react-icons/fi'
 import * as FaIcons from 'react-icons/fa'
 import {IconContext} from 'react-icons'
@@ -9,8 +9,36 @@ import logo from '../../logo.svg'
 
 const SideBar = () => {
 	const [sidebar, setSidebar] = useState(true)
-	const [activePage, setActivePage] = useState('dashboard')
 	const showSidebar = () => setSidebar(!sidebar)
+	const [activeSidebarMenu, setActiveSidebarMenu] = useState('dashboard')
+	const SidebarData = [
+		{
+			title: 'Home',
+			page: 'home',
+			path: '/',
+			icon: <FiIcons.FiHome/>,
+			cName: 'nav-text'
+		}, {
+			title: 'Dashboard',
+			page: 'dashboard',
+			path: '/dashboard',
+			icon: <FiIcons.FiActivity/>,
+			cName: 'nav-text'
+		}, {
+			title: 'Manage Movies',
+			page: 'manage-movies',
+			path: '/movies',
+			icon: <FiIcons.FiMonitor/>,
+			cName: 'nav-text'
+		}, {
+			title: 'Manage Games',
+			page: 'manage-games',
+			path: '/games',
+			icon: <FiIcons.FiTarget/>,
+			cName: 'nav-text'
+		}
+	]
+
 	return(
 		<>
 			<div className="navbar">
@@ -34,7 +62,7 @@ const SideBar = () => {
 					</Link>
 				}
 			</div>
-			<nav className={sidebar ? 'nav-menu active' : 'nav-menu'}>
+			<nav className={sidebar ? 'sidebar nav-menu active' : 'sidebar nav-menu'}>
 				<ul className="nav-menu-items">
 					<li className="navbar-toggle">
 						<Link to='#' className='menu-bars'>
@@ -50,30 +78,17 @@ const SideBar = () => {
 							</div>
 						</Link>
 					</li>
-					<li className="nav-text">
-						<Link to='/' >
-							<FiIcons.FiHome/>
-							<span>Home</span>
-						</Link>
-					</li>
-					<li className="nav-text">
-						<Link to='/dashboard' onClick={() => setActivePage('dashboard')} className={(activePage == 'dashboard') ? 'active' : ''} >
-							<FiIcons.FiActivity/>
-							<span>Dasbhoard</span>
-						</Link>
-					</li>
-					<li className="nav-text">
-						<Link to='/' onClick={() => setActivePage('manage-movies')} className={(activePage == 'manage-movies') ? 'active' : ''} >
-							<FiIcons.FiMonitor/>
-							<span>Manage Movies</span>
-						</Link>
-					</li>
-					<li className="nav-text">
-						<Link to='#' onClick={() => setActivePage('manage-games')} className={(activePage == 'manage-games') ? 'active' : ''} >
-							<FiIcons.FiTarget/>
-							<span>Manage Games</span>
-						</Link>
-					</li>
+					{SidebarData.map((item, index) => {
+						return(
+							<li key={index} onClick={ () => {setActiveSidebarMenu(item.page)}}
+							className={activeSidebarMenu === item.page ? `${item.cName} active` : item.cName}>
+								<Link to={item.path} onClick={ () => {setActiveSidebarMenu(item.page)}}>
+									{item.icon}
+									<span onClick={ () => {setActiveSidebarMenu(item.page)}}>{item.title}</span>
+								</Link>
+							</li>
+						)
+					})}
 				</ul>
 			</nav>
 		</>

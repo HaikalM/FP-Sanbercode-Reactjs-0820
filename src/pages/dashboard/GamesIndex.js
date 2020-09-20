@@ -1,8 +1,13 @@
 import React from 'react'
+import DashboardLayout from '../../layouts/Dashboard'
 
 const GamesIndex = () => {
 	return(
-		<h1>Index Games</h1>
+		<>
+			<DashboardLayout>
+				<h1>Index Games</h1>
+			</DashboardLayout>
+		</>
 	)
 }
 
