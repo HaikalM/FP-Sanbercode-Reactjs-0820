@@ -10,12 +10,17 @@ import * as FaIcons from 'react-icons/fa'
 import axios from 'axios'
 import {MoviesContext} from './MoviesContext'
 import MoviesDetailModal from './DetailModal'
+import FormModal from './FormModal'
 
 const DataTable = () => {
-	const {movies_data, selected_movieid, show_detail_modal} = useContext(MoviesContext)
+	const {movies_data, selected_movieid, selected_movie, show_detail_modal, show_form_modal, form_modal_type, form_input} = useContext(MoviesContext)
 	const [moviesData, setMoviesData] = movies_data
 	const [selectedMovieId, setSelectedMovieId] = selected_movieid
+	const [selectedMovie, setSelectedMovie] = selected_movie
 	const [showDetailModal, setShowDetailModal] = show_detail_modal
+	const [showFormModal, setShowFormModal] = show_form_modal
+	const [formModalType, setFormModalType] = form_modal_type
+	const [formInput, setFormInput] = form_input
 
 	const [searchValue, setSearchValue] = useState('')
 	const [prevMoviesData, setPrevMoviesData] = useState([])
@@ -39,10 +44,49 @@ const DataTable = () => {
 
 	const handleMovieDetail = (props) => {
 		const movieId = props
-		let selectedMovie = moviesData.find(movie => movie.id == movieId)
 		setSelectedMovieId(props)
+		setSelectedMovie('')
+		setShowFormModal(false)
 		setShowDetailModal(true)
+		let selectedMovie = moviesData.find(movie => movie.id == movieId)
 		console.log(selectedMovie.title)
+	}
+
+	const handleCreateMovie = () => {
+		setSelectedMovieId('')
+		setSelectedMovie('')
+		setShowDetailModal(false)
+		setShowFormModal(true)
+		setFormModalType('create')
+		setFormInput({
+			id: null,
+			image_url: '',
+			title: '',
+			duration: '',
+			genre: '',
+			year: '',
+			description: '',
+			rating: 0
+		})
+	}
+
+	const handleEditMovie = (props) => {
+		const movieId = props
+		setSelectedMovieId(props)
+		setSelectedMovie('')
+		setShowDetailModal(false)
+		setShowFormModal(true)
+		setFormModalType('edit')
+		setFormInput({
+			id: null,
+			image_url: '',
+			title: '',
+			duration: '',
+			genre: '',
+			year: '',
+			description: '',
+			rating: 0
+		})
 	}
 
 	return(
@@ -50,6 +94,10 @@ const DataTable = () => {
 			<MoviesDetailModal
 				show={showDetailModal}
 				onHide={() => setShowDetailModal(false)}
+			/>
+			<FormModal
+				show={showFormModal}
+				onHide={() => setShowFormModal(false)}
 			/>
 			<Row className='row justify-content-end mb-3'>
 				<Col md={4}>
@@ -66,7 +114,7 @@ const DataTable = () => {
 					</InputGroup>
 				</Col>
 				<Col md={2}>
-					<Button size='md' variant="primary">
+					<Button size='md' variant="primary" onClick={() => handleCreateMovie()}>
 						<FiIcons.FiPlus/> Add Movies
 					</Button>
 				</Col>
@@ -104,7 +152,9 @@ const DataTable = () => {
 											<Button
 												onClick={() => handleMovieDetail(movie.id)}
 												variant="secondary" className='mr-1'><FiIcons.FiEye/> Detail</Button>
-											<Button movie_id={movie.id} variant="outline-info" className='mr-1'><FiIcons.FiEdit/></Button>
+											<Button
+												onClick={() => handleEditMovie(movie.id)}
+												variant="outline-info" className='mr-1'><FiIcons.FiEdit/></Button>
 											<Button movie_id={movie.id} variant="outline-danger"><FiIcons.FiTrash/></Button>
 										</td>
 									</tr>
