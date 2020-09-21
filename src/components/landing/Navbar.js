@@ -5,7 +5,7 @@ import {
 	Button
 } from 'react-bootstrap'
 import logo from '../../logo.svg'
-import {Link} from 'react-router-dom'
+import {Link, Redirect} from 'react-router-dom'
 import {LoginContext} from '../../context/LoginContext'
 
 const NavbarBootstrap = () => {
@@ -13,7 +13,9 @@ const NavbarBootstrap = () => {
 	const [userData, setUserData] = user_data
 
 	function handleLogout(){
-
+		localStorage.clear()
+		setUserData(null)
+		return <Redirect to='/'/>
 	}
 
 	return(
@@ -49,7 +51,7 @@ const NavbarBootstrap = () => {
 							<NavDropdown title={`Signed in as: ${userData.name}`} id="basic-nav-dropdown">
 								<NavDropdown.Item href="#action/3.1">Profile</NavDropdown.Item>
 								<NavDropdown.Divider />
-								<NavDropdown.Item onCLick={() => handleLogout}>Logout</NavDropdown.Item>
+								<NavDropdown.Item onClick={handleLogout}>Logout</NavDropdown.Item>
 							</NavDropdown>
 						</Nav>
 					)}

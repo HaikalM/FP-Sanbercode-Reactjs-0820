@@ -2,6 +2,7 @@ import React, {useState, useContext} from 'react'
 import {Form, Button} from 'react-bootstrap'
 import {LoginContext} from '../../context/LoginContext'
 import {useHistory} from 'react-router-dom'
+import axios from 'axios'
 
 const LoginForm = () => {
 	const {user_data, input_login} = useContext(LoginContext)
@@ -28,16 +29,23 @@ const LoginForm = () => {
 	function handleSubmit(e){
 		e.preventDefault()
 		if(loginInput.email !== '' && loginInput.password !== ''){
-			const searchUser = userData.filter(user => user.email === loginInput.email && user.password === loginInput.password)
-			if(searchUser.length > 0){
-				history.push('/movies')
-			}
+			axios.get(`https://backendexample.sanbersy.com/api/user-login`, {
+				email: loginInput.email,
+				password: loginInput.password
+			}).then(
+				res => {
+					console.log(res.data)
+					var user = res.data.user
+					var token = res.data.token
+					var currentUser = {name: user.name, email: user.email, token}
+					setUserData(currentUser)
+					localStorage.setItem('user', JSON.stringify(currentUser))
+					history.push('/movies')
+				}
+			).catch((err)=>{
+				alert(err)
+			})
 		}
-		//setLoginInput({
-			//email: '',
-			//password: ''
-		//})
-		//console.log(userData)
 	}
 
 	return(

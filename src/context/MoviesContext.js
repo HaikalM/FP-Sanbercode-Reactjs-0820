@@ -30,7 +30,7 @@ const MoviesProvider = (props) => {
 					headers: {
 						mode: "no-cors",
 						'Access-Control-Allow-Origin': '*',
-						'Authorization': "Bearer " + userData.token,
+						//'Authorization': "Bearer " + userData.token,
 						//'Content-Type': null
 					}
 				}
