@@ -29,7 +29,7 @@ const LoginForm = () => {
 	function handleSubmit(e){
 		e.preventDefault()
 		if(loginInput.email !== '' && loginInput.password !== ''){
-			axios.get(`https://backendexample.sanbersy.com/api/user-login`, {
+			axios.post(`https://backendexample.sanbersy.com/api/user-login`, {
 				email: loginInput.email,
 				password: loginInput.password
 			}).then(
