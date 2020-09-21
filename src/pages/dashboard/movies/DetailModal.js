@@ -6,14 +6,14 @@ import * as FiIcons from 'react-icons/fi'
 import * as FaIcons from 'react-icons/fa'
 
 const DetailModal = (props) => {
-	const {movies_data, selected_movieid, show_detail_modal} = useContext(MoviesContext)
+	const {movies_data, selected_movieid, selected_movie, show_detail_modal} = useContext(MoviesContext)
 	const [selectedMovieId, setSelectedMovieId] = selected_movieid
-	const [selectedMovie, setSelectedMovie] = useState('')
+	const [selectedMovie, setSelectedMovie] = selected_movie
 	const [showDetailModal, setShowDetailModal] = show_detail_modal
 	const movie = selectedMovie
 
 	useEffect(() => {
-		if(movie == ''){
+		if(movie === ''){
 			axios.get(`https://backendexample.sanbersy.com/api/data-movie/${selectedMovieId}`, {
 				headers: {
 					mode: "no-cors"
