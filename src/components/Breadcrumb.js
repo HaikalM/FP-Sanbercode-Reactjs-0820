@@ -1,14 +1,14 @@
 import React from 'react'
+import {Link} from 'react-router-dom'
 import {Container, Breadcrumb} from 'react-bootstrap'
 
 const BreadcrumbBootstrap = () => {
 	return(
 		<Breadcrumb>
 			<Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-			<Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-				Library
+			<Breadcrumb.Item href="#" active>
+				<Link to='/dashboard'>Dashboard</Link>
 			</Breadcrumb.Item>
-			<Breadcrumb.Item active>Data</Breadcrumb.Item>
 		</Breadcrumb>
 	)
 }
