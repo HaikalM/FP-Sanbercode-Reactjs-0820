@@ -5,11 +5,14 @@ import {
 	FormControl
 } from 'react-bootstrap'
 import {MoviesContext} from '../../../context/MoviesContext'
+import {LoginContext} from '../../../context/LoginContext'
 import axios from 'axios'
 import '../../../styles/component/Form.scss'
 import * as FiIcons from 'react-icons/fi'
 
 const FormModal = (props) => {
+	const {user_data} = useContext(LoginContext)
+	const [userData, setUserData] = user_data
 	const {movies_data, selected_movieid, selected_movie, show_detail_modal, show_form_modal, form_modal_type, form_input} = useContext(MoviesContext)
 	const [moviesData, setMoviesData] = movies_data
 	const [selectedMovieId, setSelectedMovieId] = selected_movieid
@@ -26,7 +29,10 @@ const FormModal = (props) => {
 			if(movie === ''){
 				axios.get(`https://backendexample.sanbersy.com/api/data-movie/${selectedMovieId}`, {
 					headers: {
-						mode: "no-cors"
+						mode: "no-cors",
+						'Access-Control-Allow-Origin': '*',
+						'Authorization': "Bearer " + userData.token,
+						'Content-Type': null
 					}
 				})
 				.then(res=>{
@@ -48,7 +54,7 @@ const FormModal = (props) => {
 		}
 	})
 
-	function handleChange(e){
+	const handleChange = (e) => {
 		let inputName = e.target.name
 		switch(inputName){
 			case 'image-url':{
@@ -87,12 +93,70 @@ const FormModal = (props) => {
 	function handleSubmit(e){
 		e.preventDefault()
 		if(formModalType === 'create'){
-			if(movie === ''){
-
+			if(selectedMovieId === ''){
+				axios.post(`https://backendexample.sanbersy.com/api/data-movie`, {
+					image_url: formInput.image_url,
+					title: formInput.title,
+					duration: formInput.duration,
+					genre: formInput.genre,
+					year: formInput.year,
+					description: formInput.description,
+					rating: formInput.rating
+				}, {
+					headers: {
+						mode: "no-cors",
+						'Authorization': "Bearer " + userData.token,
+						//'Content-Type': null
+					}
+				}).then((res) => {
+					console.log(res)
+					setMoviesData([...moviesData, {
+						id: res.data.id,
+						image_url: res.data.image_url,
+						title: res.data.title,
+						duration: res.data.duration,
+						genre: res.data.genre,
+						year: res.data.year,
+						description: res.data.description,
+						rating: res.data.rating
+					}])
+					setShowFormModal(false)
+				}).catch((err) => console.log(err))
 			}
 			console.log('running create data')
 		}else if(formModalType === 'edit'){
 			if(movie !== ''){
+				axios.put(`https://backendexample.sanbersy.com/api/data-movie/${selectedMovieId}`, {
+					image_url: formInput.image_url,
+					title: formInput.title,
+					duration: formInput.duration,
+					genre: formInput.genre,
+					year: formInput.year,
+					description: formInput.description,
+					rating: formInput.rating
+				}, {
+					headers: {
+						mode: "no-cors",
+						'Authorization': `Bearer ${userData.token}`,
+						//'Content-Type': null
+					}
+				}).then((res) => {
+					console.log(res)
+					let newMoviesData = moviesData.map(movie => {
+						if(movie.id === selectedMovieId){
+							movie.image_url = formInput.image_url
+							movie.title = formInput.title
+							movie.duration = formInput.duration
+							movie.genre = formInput.genre
+							movie.year = formInput.year
+							movie.description = formInput.description
+							movie.rating = formInput.rating
+						}
+						return movie
+					})
+					setMoviesData(newMoviesData)
+					setShowFormModal(false)
+				}).catch((err) => console.log(err))
 				console.log('running edit data')
 			}
 		}
