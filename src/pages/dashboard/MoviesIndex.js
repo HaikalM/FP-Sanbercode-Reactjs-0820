@@ -5,7 +5,7 @@ import {
 	InputGroup, FormControl,
 	Row, Col
 } from 'react-bootstrap'
-import MoviesProvider from './movies/MoviesContext'
+import MoviesProvider from '../../context/MoviesContext'
 
 import * as FiIcons from 'react-icons/fi'
 import * as FaIcons from 'react-icons/fa'

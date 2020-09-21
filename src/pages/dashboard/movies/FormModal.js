@@ -4,7 +4,7 @@ import {
 	Form, Row, Col,
 	FormControl
 } from 'react-bootstrap'
-import {MoviesContext} from './MoviesContext'
+import {MoviesContext} from '../../../context/MoviesContext'
 import axios from 'axios'
 import '../../../styles/component/Form.scss'
 import * as FiIcons from 'react-icons/fi'
