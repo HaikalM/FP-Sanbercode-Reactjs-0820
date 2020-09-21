@@ -1,14 +1,11 @@
-import React, {useState, useContext} from 'react'
+import React, {useContext} from 'react'
 import {
-	Container,
-	Nav,
-	Button,
 	Card, CardColumns} from 'react-bootstrap'
 import {MoviesContext} from '../context/MoviesContext'
 
 const MoviesCard = () => {
 	const {movies_data} = useContext(MoviesContext)
-	const [moviesData, setMoviesData] = movies_data
+	const [moviesData] = movies_data
 
 	return(
 		<>
