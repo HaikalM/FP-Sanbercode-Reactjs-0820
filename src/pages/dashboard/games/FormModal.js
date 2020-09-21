@@ -114,7 +114,7 @@ const FormModal = (props) => {
 				<Form onSubmit={handleSubmit} className="form-container">
 					<Row>
 						<Col md={3}>
-							<label htmlFor="image-url">Link Cover Film</label>
+							<label htmlFor="image-url">Link Cover Games</label>
 						</Col>
 						<Col md={9}>
 							<FormControl
