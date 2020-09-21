@@ -1,6 +1,6 @@
 import React, {useState, useContext, useEffect} from 'react'
 import {Modal, Button, Row, Col} from 'react-bootstrap'
-import {MoviesContext} from './MoviesContext'
+import {MoviesContext} from '../../../context/MoviesContext'
 import axios from 'axios'
 import * as FiIcons from 'react-icons/fi'
 import * as FaIcons from 'react-icons/fa'

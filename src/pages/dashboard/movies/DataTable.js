@@ -8,7 +8,7 @@ import {
 import * as FiIcons from 'react-icons/fi'
 import * as FaIcons from 'react-icons/fa'
 import axios from 'axios'
-import {MoviesContext} from './MoviesContext'
+import {MoviesContext} from '../../../context/MoviesContext'
 import MoviesDetailModal from './DetailModal'
 import FormModal from './FormModal'
 
@@ -26,19 +26,27 @@ const DataTable = () => {
 	const [prevMoviesData, setPrevMoviesData] = useState([])
 	const tesKonteks2 = useContext(MoviesContext)
 
+	const [searchInput, setSearchInput] = useState('')
+
+	const handleSearchInput = (e) => {
+		setSearchInput(e.target.value)
+	}
+
+	const handleClearSearch = () => {
+		setSearchInput('')
+		setMoviesData([...prevMoviesData])
+	}
+
 	function searchMovie(e){
 		e.preventDefault()
 		setPrevMoviesData(moviesData)
-		const textCari = e.target.value
-		if(textCari != ''){
-			let resultSearchMovie = moviesData.filter(movie => movie.title == textCari)
-			if(resultSearchMovie.length != 0){
-				setSearchValue(textCari)
+		if(searchInput !== ''){
+			let resultSearchMovie = moviesData.filter(movie => movie.title.toLowerCase() == searchInput.toLowerCase())
+			if(resultSearchMovie.length > 0){
 				setMoviesData([...resultSearchMovie])
 			}
 		}else{
 			setMoviesData([...prevMoviesData])
-			setSearchValue('')
 		}
 	}
 
@@ -101,17 +109,26 @@ const DataTable = () => {
 			/>
 			<Row className='row justify-content-end mb-3'>
 				<Col md={4}>
-					<InputGroup>
-						<FormControl
-							placeholder="Search Movies"
-							aria-label="Moview Title"
-							aria-describedby="basic-addon2"
-							onChange={searchMovie}
-						/>
-						<InputGroup.Append>
-							<InputGroup.Text id="basic-addon2"><FiIcons.FiSearch/></InputGroup.Text>
-						</InputGroup.Append>
-					</InputGroup>
+					<Form onSubmit={searchMovie}>
+						<InputGroup>
+							<FormControl
+								value={searchInput}
+								placeholder="Search Movies"
+								aria-label="Moview Title"
+								aria-describedby="basic-addon2"
+								onChange={handleSearchInput}
+								className='border border-secondary'
+							/>
+							<InputGroup.Append>
+								{searchInput.length > 0 &&
+										<Button variant='outline-secondary' onClick={handleClearSearch}><FaIcons.FaTimes/></Button>
+								}
+								{searchInput.length == 0 &&
+									<Button type='submit' variant='outline-secondary' onClick={searchMovie}><FiIcons.FiSearch/></Button>
+								}
+							</InputGroup.Append>
+						</InputGroup>
+					</Form>
 				</Col>
 				<Col md={2}>
 					<Button size='md' variant="primary" onClick={() => handleCreateMovie()}>
