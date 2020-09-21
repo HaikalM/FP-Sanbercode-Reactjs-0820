@@ -13,7 +13,7 @@ const MoviesCard = () => {
 			<CardColumns>
 				{moviesData.map((movie, index) => {
 					return(
-						<Card>
+						<Card key={index}>
 							<Card.Img variant="top" src={movie.image_url} width='100px' height='250px' style={{ objectFit: 'cover' }} />
 							<Card.Body>
 								<Card.Title>Card title</Card.Title>
