@@ -1,15 +1,16 @@
 import React from 'react'
 import {Breadcrumb} from 'react-bootstrap'
+import {Link} from 'react-router-dom'
 import '../../styles/component/Breadcrumb.scss'
 
 const BreadcrumbDashboard = () => {
 	return(
-		<Breadcrumb className='display-block'>
+		<Breadcrumb>
 			<Breadcrumb.Item href="#">Home</Breadcrumb.Item>
-			<Breadcrumb.Item href="https://getbootstrap.com/docs/4.0/components/breadcrumb/">
-				Library
+			<Breadcrumb.Item href="#">
+				<Link to='/dashboard'>Dashboard</Link>
 			</Breadcrumb.Item>
-			<Breadcrumb.Item active>Data</Breadcrumb.Item>
+			<Breadcrumb.Item active>Index</Breadcrumb.Item>
 		</Breadcrumb>
 	)
 }
