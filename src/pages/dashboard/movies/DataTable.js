@@ -20,13 +20,16 @@ const DataTable = () => {
 		const textCari = e.target.value
 		if(textCari != ''){
 			let resultSearchMovie = moviesData.filter(movie => movie.title == textCari)
-			if(resultSearchMovie.length != 0){
+			if(resultSearchMovie.length > 0){
 				setSearchValue(textCari)
 				setMoviesData([...resultSearchMovie])
+			}else{
+				setSearchValue('')
+				setMoviesData([...prevMoviesData])
 			}
 		}else{
-			setMoviesData([...prevMoviesData])
 			setSearchValue('')
+			setMoviesData([...prevMoviesData])
 		}
 	}
 
