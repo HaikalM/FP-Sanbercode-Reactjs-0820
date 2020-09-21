@@ -9,10 +9,13 @@ import * as FiIcons from 'react-icons/fi'
 import * as FaIcons from 'react-icons/fa'
 import axios from 'axios'
 import {MoviesContext} from '../../../context/MoviesContext'
+import {LoginContext} from '../../../context/LoginContext'
 import MoviesDetailModal from './DetailModal'
 import FormModal from './FormModal'
 
 const DataTable = () => {
+	const {user_data} = useContext(LoginContext)
+	const [userData, setUserData] = user_data
 	const {movies_data, selected_movieid, selected_movie, show_detail_modal, show_form_modal, form_modal_type, form_input} = useContext(MoviesContext)
 	const [moviesData, setMoviesData] = movies_data
 	const [selectedMovieId, setSelectedMovieId] = selected_movieid
@@ -41,7 +44,7 @@ const DataTable = () => {
 		e.preventDefault()
 		setPrevMoviesData(moviesData)
 		if(searchInput !== ''){
-			let resultSearchMovie = moviesData.filter(movie => movie.title.toLowerCase() == searchInput.toLowerCase())
+			let resultSearchMovie = moviesData.filter(movie => movie.title == searchInput)
 			if(resultSearchMovie.length > 0){
 				setMoviesData([...resultSearchMovie])
 			}
@@ -62,7 +65,7 @@ const DataTable = () => {
 
 	const handleCreateMovie = () => {
 		setSelectedMovieId('')
-		setSelectedMovie('')
+		//setSelectedMovie('')
 		setShowDetailModal(false)
 		setShowFormModal(true)
 		setFormModalType('create')
@@ -95,6 +98,23 @@ const DataTable = () => {
 			description: '',
 			rating: 0
 		})
+	}
+
+	const handleDestroyMovie = (props) =>{
+		let movieId = parseInt(props)
+		axios.delete(`https://backendexample.sanbersy.com/api/data-movie/${movieId}`,
+			{
+				headers: {
+					mode: "no-cors",
+					'Access-Control-Allow-Origin': '*',
+					'Authorization': "Bearer " + userData.token,
+					//'Content-Type': null
+				}
+			}
+		).then(res=>{
+			let newMoviesData = moviesData.filter(movie => movie.id !== movieId)
+			setMoviesData([...newMoviesData])
+		}).catch((err) => console.log(err))
 	}
 
 	return(
@@ -172,7 +192,9 @@ const DataTable = () => {
 											<Button
 												onClick={() => handleEditMovie(movie.id)}
 												variant="outline-info" className='mr-1'><FiIcons.FiEdit/></Button>
-											<Button movie_id={movie.id} variant="outline-danger"><FiIcons.FiTrash/></Button>
+											<Button
+												onClick={() => handleDestroyMovie(movie.id)}
+												variant="outline-danger"><FiIcons.FiTrash/></Button>
 										</td>
 									</tr>
 								)

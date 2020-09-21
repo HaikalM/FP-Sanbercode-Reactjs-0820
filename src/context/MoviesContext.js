@@ -1,8 +1,11 @@
-import React, {useState, useEffect, createContext} from 'react'
+import React, {useState, useEffect, createContext, useContext} from 'react'
 import axios from 'axios'
+import {LoginContext} from './LoginContext'
 export const MoviesContext = createContext()
 
 const MoviesProvider = (props) => {
+	const {user_data} = useContext(LoginContext)
+	const [userData, setUserData] = user_data
 	const [moviesData, setMoviesData] = useState([])
 	const [selectedMovieId, setSelectedMovieId] = useState([])
 	const [selectedMovie, setSelectedMovie] = useState([])
@@ -22,17 +25,21 @@ const MoviesProvider = (props) => {
 
 	useEffect( () => {
 		if(moviesData.length === 0){
-			axios.get(`https://backendexample.sanbersy.com/api/data-movie`, {
-				headers: {
-					mode: "no-cors"
+			axios.get(`https://backendexample.sanbersy.com/api/data-movie`,
+				{
+					headers: {
+						mode: "no-cors",
+						'Access-Control-Allow-Origin': '*',
+						'Authorization': "Bearer " + userData.token,
+						//'Content-Type': null
+					}
 				}
-			})
-			.then(res=>{
+			).then(res=>{
 				setMoviesData(res.data)
 				console.log(res.data)
-			})
+			}).catch((err) => console.log(err))
 		}
-	})
+	}, [moviesData])
 
 	return(
 		<MoviesContext.Provider
