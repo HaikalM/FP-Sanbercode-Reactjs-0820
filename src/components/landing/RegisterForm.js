@@ -1,6 +1,7 @@
 import React, {useState, useContext} from 'react'
 import {Form, Button} from 'react-bootstrap'
 import {LoginContext} from '../../context/LoginContext'
+import axios from 'axios'
 
 const RegisterForm = () => {
 	const {user_data, input_login} = useContext(LoginContext)
@@ -28,13 +29,23 @@ const RegisterForm = () => {
 	}
 
 	function handleSubmit(e){
-		console.log(userData)
 		e.preventDefault()
-		setUserData([...userData, {
+		axios.post(`https://backendexample.sanbersy.com/api/register`,{
 			name: registerInput.name,
 			email: registerInput.email,
 			password: registerInput.password,
-		}])
+		}).then(
+			(res) => {
+				console.log(res.data)
+				var user = res.data.user
+				var token = res.data.token
+				var currentUser = {name: user.name, email: user.email, token}
+				setUserData(currentUser)
+				localStorage.setItem('user', JSON.stringify(currentUser))
+			}
+		).catch((err)=>{
+			alert(err)
+		})
 		setRegisterInput({
 			name: '',
 			email: '',

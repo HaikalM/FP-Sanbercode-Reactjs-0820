@@ -9,13 +9,14 @@ import BreadCrumb from '../components/landing/Breadcrumb'
 import AlertBootstrap from '../components/Alert'
 import MoviesCard from '../components/MoviesCard'
 import MoviesProvider from '../context/MoviesContext'
+import LoginProvider from '../context/LoginContext'
 
 const Landing = () => {
 	const [showAlert, setShowAlert] = useState(true);
 	const [modalShow, setModalShow] = useState(false);
 
 	return(
-		<>
+		<LoginProvider>
 			<Navbar/>
 			<Container style={{marginTop: '20px'}}>
 				{showAlert &&
@@ -29,7 +30,7 @@ const Landing = () => {
 					<MoviesCard/>
 				</MoviesProvider>
 			</Container>
-		</>
+		</LoginProvider>
 	)
 }
 
