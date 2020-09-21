@@ -9,7 +9,6 @@ const DashboardLayout = (props) => {
 			<Sidebar/>
 			<div className="dashboard-body">
 				<BreadcrumbDashboard/>
-				<h2>Dashboard Layout</h2>
 				{props.children}
 			</div>
 		</>
